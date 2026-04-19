@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget Tracker</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Budget Tracker</h1>
+    <nav>
+      <a href="/" class="active">Expenditures</a>
+      <a href="/stats.html">Stats</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Add Expenditure</h2>
+      <form
+        hx-post="/api/expenditures"
+        hx-target="#expenditure-rows"
+        hx-swap="innerHTML"
+        hx-on::after-request="if(event.detail.successful) this.reset()"
+      >
+        <div class="form-grid">
+          <div class="field">
+            <label for="place">Place</label>
+            <input
+              type="text"
+              id="place"
+              name="place"
+              required
+              placeholder="e.g. Grocery Store"
+              autocomplete="off"
+            >
+          </div>
+          <div class="field">
+            <label for="amount">Amount ($)</label>
+            <input
+              type="number"
+              id="amount"
+              name="amount"
+              step="0.01"
+              min="0.01"
+              required
+              placeholder="0.00"
+            >
+          </div>
+          <div class="field">
+            <label for="date">Date</label>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              required
+            >
+          </div>
+          <button type="submit">Add</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Recent Expenditures</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Place</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody
+          id="expenditure-rows"
+          hx-get="/api/expenditures"
+          hx-trigger="load"
+          hx-swap="innerHTML"
+        >
+          <tr><td colspan="3" class="empty">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    // Default date input to today
+    document.getElementById('date').valueAsDate = new Date();
+  </script>
+</body>
+</html>
