@@ -1,0 +1,15 @@
+{
+  "name": "basic-budgeting",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev public --compatibility-flag=nodejs_compat",
+    "deploy": "wrangler pages deploy public"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.6.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
